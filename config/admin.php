@@ -279,17 +279,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application layouts
+    | Application layout
     |--------------------------------------------------------------------------
     |
-    | This value is the layouts of admin pages.
+    | This value is the layout of admin pages.
     | @see https://adminlte.io/docs/2.4/layout
     |
-    | Supported: "fixed", "layouts-boxed", "layouts-top-nav", "sidebar-collapse",
+    | Supported: "fixed", "layout-boxed", "layout-top-nav", "sidebar-collapse",
     | "sidebar-mini".
     |
     */
-    'layouts' => ['sidebar-mini', 'sidebar-collapse'],
+    'layout' => ['sidebar-mini', 'sidebar-collapse'],
 
     /*
     |--------------------------------------------------------------------------

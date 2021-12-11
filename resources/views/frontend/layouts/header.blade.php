@@ -10,27 +10,27 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
+                    <a href="/" class="nav-item-link">
                         TRANG CHỦ
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/gioi-thieu" class="nav-link">
+                    <a href="/gioi-thieu" class="nav-item-link">
                         GIỚI THIỆU
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/lop-hoc" class="nav-link">
+                    <a href="/lop-hoc" class="nav-item-link">
                         LỚP HỌC
                     </a>
                 </li>
                 <li class="nav-item">
                     @if(Auth::check())
-                        <a href="{{ route('frontend.baithi') }}" class="nav-link">
+                        <a href="{{ route('frontend.baithi') }}" class="nav-item-link">
                             BÀI THI
                         </a>
                     @else
-                        <a href="{{ route('frontend.login') }}" class="nav-link">
+                        <a href="{{ route('frontend.login') }}" class="nav-item-link">
                             BÀI THI
                         </a>
                     @endif
@@ -41,10 +41,32 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
             @if(Auth::check())
-                <a href="">{{ Auth::user()->name }}</a>
+                <div id="profile" class="position-relative">
+                    <a class="text-primary">{{ Auth::user()->name }}
+                    </a>
+                    <ul style="min-width: 150px; display: none" id="profile-item" class="pt-1 position-absolute p-0 list-group list-group-flush shadow p-3 mb-5 bg-white rounded">
+                        <li class="list-group-item p-0">
+{{--                            <a class="text-decoration-none text-body" href="{{ route('frontend.profile') }}">Tài khoản</a>--}}
+                        </li>
+                        <li class="list-group-item p-0">
+                            <a class="text-decoration-none text-body" href="{{ route('frontend.logout') }}">Đăng xuất</a>
+                        </li>
+                    </ul>
+                </div>
+
+
             @else
                 <a href="{{ route('frontend.login') }}" class="login" >Đăng nhập</a>
             @endif
         </div>
     </div>
 </nav>
+<script>
+    $(document).ready(function (){
+        $('#profile').hover(function (){
+            $('#profile-item').css('display', 'block');
+        },function (){
+            $('#profile-item').css('display', 'none');
+        });
+    })
+</script>

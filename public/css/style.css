@@ -36,7 +36,7 @@ header{
  	margin-left: 20%;
 }
 
-.nav-link {
+.nav-item-link {
 	margin-left: 20px;
 	color:  #137f85 !important;
 	font-weight: bold;
@@ -79,4 +79,3 @@ header{
 	text-align: center;
 }
 
-	

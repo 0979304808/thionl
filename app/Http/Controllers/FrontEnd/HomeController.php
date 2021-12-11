@@ -48,4 +48,12 @@ class HomeController extends Controller
         $view->with('dethi', $dethi);
         return $view;
     }
+
+    public function profile()
+    {
+        $user = \Auth::user();
+        $view = view('frontend.profile');
+        return $view;
+
+    }
 }

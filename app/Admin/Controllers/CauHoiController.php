@@ -34,17 +34,17 @@ class CauHoiController extends AdminController
         $grid->column('id', 'Câu trả lời')->display(function (){
             return 'Xem chi tiết';
         })->modal('Các câu trả lời', function ($model) use ($grid){
-                $data = [
-                    ($model->A ? ['A', $model->A] : null),
-                    ($model->B ? ['B', $model->B] : null),
-                    ($model->C ? ['C', $model->C] : null),
-                    ($model->D ? ['D', $model->D] : null),
-                    ($model->E ? ['E', $model->E] : null),
-                    ($model->F ? ['F', $model->F] : null),
-                ];
-                $data = array_filter($data);
+            $data = [
+                ($model->A ? ['A', $model->A] : null),
+                ($model->B ? ['B', $model->B] : null),
+                ($model->C ? ['C', $model->C] : null),
+                ($model->D ? ['D', $model->D] : null),
+                ($model->E ? ['E', $model->E] : null),
+                ($model->F ? ['F', $model->F] : null),
+            ];
+            $data = array_filter($data);
 
-                $datas = array_filter($data, function($value) use ($model) { return $value[0] == $model->DapAn ? ($value[2] = "ok") : $value; });
+            $datas = array_filter($data, function($value) use ($model) { return $value[0] == $model->DapAn ? ($value[2] = "ok") : $value; });
 
 
             return new Table(['Đáp án','Nội dung'], $datas);

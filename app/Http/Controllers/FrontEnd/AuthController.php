@@ -19,7 +19,7 @@ class AuthController extends Controller
         if (Auth::attempt($data)){
             return redirect()->route('frontend.home');
         }
-        return 'ok';
+        return redirect()->route('frontend.login');
     }
 
     public function register(Request $request){
