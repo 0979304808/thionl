@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\imports\CauHoiImport;
 use App\Models\CauHoi;
 use Carbon\Carbon;
 use Encore\Admin\Controllers\AdminController;
@@ -9,6 +10,14 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Encore\Admin\Widgets\Table;
+use App\Admin\Extensions\Tools\ImportButton; // Add
+use Encore\Admin\Layout\Content; // Add
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
+Use App\Admin\Extensions\Exports\CauHoiExport;
+
+// Add
+
 
 class CauHoiController extends AdminController
 {
@@ -30,6 +39,7 @@ class CauHoiController extends AdminController
 
 //        $grid->column('id', __('Id'));
         $grid->column('CauHoi', __('Câu hỏi'));
+
 
         $grid->column('id', 'Câu trả lời')->display(function (){
             return 'Xem chi tiết';
@@ -58,6 +68,17 @@ class CauHoiController extends AdminController
             return Carbon::parse($create_at)->format('H:i:s d-m-Y');
         });
 //        $grid->column('updated_at', __('Updated at'));
+
+        $grid->tools(function ($tools) {
+            $tools->append(new ImportButton());
+        });
+
+
+        $grid->exporter(new CauHoiExport());
+
+
+
+
 
         return $grid;
     }
@@ -96,7 +117,7 @@ class CauHoiController extends AdminController
     {
         $form = new Form(new CauHoi());
         $form->tab('Nhập sản phẩm', function (Form $form) {
-            $form->text('CauHoi', __('Câu hỏi'));
+            $form->text('CauHoi', __('Câu hỏi'))->required();
 
             $form->text('A', __('A'));
             $form->text('B', __('B'));
@@ -111,10 +132,46 @@ class CauHoiController extends AdminController
 
 
 
-
-
-
-
         return $form;
+    }
+
+    protected function import(Content $content, Request $request)
+    {
+        $file = $request->file('file');
+        $csv = array_map('str_getcsv', file($file));
+        if ($csv[0]) {
+            $cau_hoi = array_search('Câu hỏi', $csv[0]);
+            $a = array_search('A', $csv[0]);
+            $b = array_search('B', $csv[0]);
+            $c = array_search('C', $csv[0]);
+            $d = array_search('D', $csv[0]);
+            $e = array_search('E', $csv[0]);
+            $f = array_search('F', $csv[0]);
+            $dap_an_dung = array_search('Đáp án', $csv[0]);
+
+            foreach ($csv as $key => $value) {
+                if ($key != 0) {
+                    $cauhoi = $value[0];
+                    if ($cau_hoi) {
+                        $cauhoi = $value[$cau_hoi];
+                    }
+                    if ($cauhoi) {
+                        if (!CauHoi::where('CauHoi', $cauhoi)->exists()) {
+                            $ch = new CauHoi();
+                            $ch->CauHoi = $cauhoi;
+                            $ch->A = $a ? $value[$a] : null;
+                            $ch->B = $b ? $value[$b] : null;
+                            $ch->C = $c ? $value[$c] : null;
+                            $ch->D = $d ? $value[$d] : null;
+                            $ch->E = $e ? $value[$e] : null;
+                            $ch->F = $f ? $value[$f] : null;
+                            $ch->DapAn = $dap_an_dung ? $value[$dap_an_dung] : null;
+                            $ch->save();
+                        }
+                    }
+                    return $a;
+                }
+            }
+        }
     }
 }

@@ -16,4 +16,8 @@ Route::group([
     $router->resource('lop-hoc', LopHocController::class);
     $router->resource('de-thi', DeThiController::class);
     $router->resource('cau-hoi', CauHoiController::class);
+
+    $router->post('cau-hoi/csv/import', 'CauHoiController@import');
+    $router->post('de-thi/csv/import', 'DeThiController@import');
+
 });
