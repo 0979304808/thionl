@@ -58,7 +58,7 @@
 
                             @elseif(\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s') >= date('Y-m-d H:i:s', strtotime($value->NgayThi)) &&
                                 \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s') <= \Carbon\Carbon::parse($value->NgayThi)->addHour()->format('Y-m-d H:i:s') )
-                                <a href="{{ route('frontend.lambaithi',$value->DeThi) }}" class="text-primary" target="_blank">Vào lớp thi</a>
+                                <a href="{{ route( 'frontend.lambaithi',['id_lophoc' => $value->id, 'id_dethi' => $value->DeThi] ) }}" class="text-primary" target="_blank">Vào lớp thi</a>
                             @else
                                 <span class="text-success">Môn thi đã xong</span>
                             @endif

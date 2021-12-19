@@ -69,9 +69,9 @@ class HomeController extends Controller
 
     }
 
-    public function lambaithi(Request $request,$id)
+    public function lambaithi(Request $request,$id_lophoc, $id_dethi)
     {
-        $dethi = DeThi::with('cauHoi')->find($id);
+        $dethi = DeThi::with('cauHoi')->find($id_dethi);
         $view = view('frontend.lambaithi');
         if (request('kq') == 'nopbai'){
             $data = $request->except(['_token','_method']);
@@ -82,7 +82,10 @@ class HomeController extends Controller
                 $dap_an = preg_replace('/[^A-Z]/', '', $value);
                 $id = preg_replace('/(_.+?)/', '', $value);
                 $key = preg_replace('/(.+?_)/', '', $value);
-                if ($dap_an && $id && $key){
+                if (!$key){
+                    $key = 0;
+                }
+                if ($dap_an && $id){
                     $cauHoi[$key]->DapAnChon = $dap_an;
                     if (CauHoi::where('id', $id)->where('DapAn', $dap_an)->first()){
                         $cauHoi[$key]->success = true;
@@ -92,8 +95,20 @@ class HomeController extends Controller
             }
             $view->with('points',round($points, 2));
             $view->with('point',round($point, 2));
+
+            if (History::where('sinh_vien_id', Auth::id())->where('lop_hoc_id', $id_lophoc)->where('de_thi_id', $dethi->id)->exists()){
+                return redirect()->back()->with('msg', 'Bạn không thể nộp bài 2 lần');
+            }
+            History::create([
+                'sinh_vien_id' => Auth::id(),
+                'lop_hoc_id' => $id_lophoc,
+                'de_thi_id' => $dethi->id,
+//                'dap_an_chon' => '',
+                'diem_so' => round($points, 2)
+            ]);
         }
         $view->with('dethi', $dethi);
+        $view->with('id_lophoc', $id_lophoc);
         return $view;
     }
 

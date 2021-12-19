@@ -32,7 +32,12 @@
                 <strong>Tổng điểm: {{ $points }} điểm</strong>
             </h4>
         @endif
-        <form action="{{ route('frontend.lambaithi', $dethi->id)."?kq=nopbai" }}" method="post">
+        @if (\Session::has('msg'))
+            <div class="alert alert-danger">
+                <span>{!! \Session::get('msg') !!}</span>
+            </div>
+        @endif
+        <form action="{{ route('frontend.lambaithi', ['id_lophoc'=> $id_lophoc,'id_dethi'=> $dethi->id])."?kq=nopbai" }}" method="post">
             @csrf
             @method('GET')
 

@@ -33,7 +33,7 @@ Route::group([
     Route::get('/huy-lop-hoc/{id}', 'HomeController@huylophoc')->name('frontend.huylophoc');
     Route::get('/bai-thi', 'HomeController@baithi')->name('frontend.baithi');
     Route::get('/tai-khoan', 'HomeController@profile')->name('frontend.profile');
-    Route::get('/lam-bai-thi/{id}', 'HomeController@lambaithi')->name('frontend.lambaithi');
+    Route::get('/lam-bai-thi/{id_lophoc}/{id_dethi}', 'HomeController@lambaithi')->name('frontend.lambaithi');
     Route::post('/nop-bai', 'HomeController@nopbai')->name('frontend.nopbai');
 });
 

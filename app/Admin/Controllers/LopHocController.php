@@ -48,9 +48,8 @@ class LopHocController extends AdminController
                 return [
                     'masv' => $comment->masv,
                     'name' => $comment->name,
-                    'diem_so' => $comment->history->diem_so,
+                    'diem_so' => $comment->history->diem_so ?? 'chưa có điểm',
                     'created_at' => $comment->created_at,
-
                 ];
             });
 
