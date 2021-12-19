@@ -23,7 +23,17 @@ header{
 	height: 100px;
 
 }
-
+ .nav-item-link {
+     text-decoration: none !important;
+     color: white;
+     margin-right: 15px;
+ }
+ .nav-item-link:hover {
+     color: #00ff5d;
+ }
+ .avtive-top {
+     color: #00ff5d;
+ }
 .login{
 	width: auto
 }
@@ -36,7 +46,7 @@ header{
  	margin-left: 20%;
 }
 
-.nav-item-link {
+ {
 	margin-left: 20px;
 	color:  #137f85 !important;
 	font-weight: bold;
@@ -72,10 +82,7 @@ header{
 	padding-left: 10px;
 }
 .btn{
-	float: right;
-	width: 15%;
-	width: 100px;
-	line-height: 80%;
+	/*float: right;*/
 	text-align: center;
 }
 

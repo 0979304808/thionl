@@ -12,9 +12,9 @@ class LopHoc extends Model
         return $this->belongsToMany(User::class, 'lophoc_user', 'lop_hoc_id', 'user_id')->withTimestamps();
     }
 
-    public function deThi()
+    public function deThii()
     {
-        return $this->hasOne(DeThi::class, 'id');
+        return $this->belongsTo(DeThi::class,'DeThi');
     }
 
 }

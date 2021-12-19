@@ -77,13 +77,12 @@ class SinhVienController extends AdminController
     {
         $form = new Form(new User());
 
-        $form->number('masv', __('Masv'));
-        $form->text('name', __('Name'));
+        $form->number('masv', __('Mã sinh viên'));
+        $form->text('name', __('Tên'));
         $form->email('email', __('Email'));
-        $form->datetime('email_verified_at', __('Email verified at'))->default(date('Y-m-d H:i:s'));
-        $form->password('password', __('Password'));
-        $form->text('remember_token', __('Remember token'));
-
+//        $form->datetime('email_verified_at', __('Email verified at'))->default(date('Y-m-d H:i:s'));
+        $form->password('password', __('Mật khẩu'));
+//        $form->text('remember_token', __('Remember token'));
         return $form;
     }
 }

@@ -10,15 +10,16 @@
     <link rel="stylesheet" href="https://mdbootstrap.com/api/snippets/static/download/MDB-Pro_4.19.1/css/mdb.min.css">
     <link rel="stylesheet" href="https://mdbootstrap.com/api/snippets/static/download/MDB-Pro_4.19.1/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <link href="./css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./css/login.css">
-    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
 <body>
 
 @include('frontend.layouts.header')
 
-@yield('content')
+<div class="min-vh-100">
+    @yield('content')
+</div>
 
 @include('frontend.layouts.footer')
 

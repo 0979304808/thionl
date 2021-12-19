@@ -2,7 +2,9 @@
 @section('content')
 
     <div id="slides" class="container mt-4" data-ride="carousel">
-        <h2>Tất cả lớp học</h2>
+        <h2 class="font-weight-bold">
+            {{ request('q') ? 'Kết quả: '.count($lophoc).' lớp học' : 'Tất cả lớp học' }}
+        </h2>
         @foreach($lophoc as $key => $value)
 
             <div class="row box-item mt-4"

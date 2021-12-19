@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\History;
 use App\Models\LopHoc;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'masv','name', 'email', 'password',
     ];
 
     /**
@@ -47,5 +48,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(LopHoc::class, 'lophoc_user', 'user_id', 'lop_hoc_id')->withTimestamps();
     }
-
+    public function history()
+    {
+        return $this->hasOne(History::class, 'sinh_vien_id')->select('diem_so');
+    }
 }

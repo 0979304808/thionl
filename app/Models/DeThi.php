@@ -8,7 +8,7 @@ class DeThi extends Model
 {
     public function lopHoc()
     {
-        return $this->hasMany(LopHoc::class, 'DeThi', 'id');
+        return $this->hasMany(LopHoc::class, 'DeThi');
     }
 
     public function cauHoi()

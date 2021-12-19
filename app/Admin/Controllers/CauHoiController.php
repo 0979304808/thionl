@@ -169,7 +169,6 @@ class CauHoiController extends AdminController
                             $ch->save();
                         }
                     }
-                    return $a;
                 }
             }
         }

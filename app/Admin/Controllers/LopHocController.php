@@ -2,6 +2,8 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Extensions\Exports\CauHoiExport;
+use App\Admin\Extensions\Exports\LopHocExport;
 use App\Models\CauHoi;
 use App\Models\DeThi;
 use App\Models\LopHoc;
@@ -36,29 +38,36 @@ class LopHocController extends AdminController
         $grid->column('TenHocPhan', __('Tên học phần'));
         $grid->column('MaHocPhan', __('Mã học phần'));
         $grid->column('MoTa', __('Mô tả'));
-        $grid->column('deThi.TenDeThi', __('Đề thi'));
+        $grid->column('deThii.TenDeThi', __('Đề thi'));
 
-        $grid->column('sinhVien', 'Sinh viên')->display(function ($sinhvien){
+        $grid->column('sinhVien', 'Sinh viên')->display(function ($sinhvien) {
             return count($sinhvien);
         })->modal('Tất cả sinh viên của lớp học', function ($model) {
 
             $comments = $model->sinhVien()->get()->map(function ($comment) {
-                return $comment->only(['masv', 'name', 'created_at']);
+                return [
+                    'masv' => $comment->masv,
+                    'name' => $comment->name,
+                    'diem_so' => $comment->history->diem_so,
+                    'created_at' => $comment->created_at,
+
+                ];
             });
 
-            return new Table(['Mã sinh viên','Tên sinh viên', 'Ngày tạo'], $comments->toArray());
+            return new Table(['Mã sinh viên', 'Tên sinh viên', 'Điểm', 'Ngày tạo'], $comments->toArray());
         });
 
-        $grid->column('NgayThi', __('Ngày thi'))->display(function ($create_at){
+        $grid->column('NgayThi', __('Ngày thi'))->display(function ($create_at) {
             return Carbon::parse($create_at)->format('H:i:s d-m-Y');
         });
 
-        $grid->column('created_at', __('Ngày cập nhật'))->display(function ($create_at){
-            return Carbon::parse($create_at)->format('H:i:s d-m-Y');
-        });
-        $grid->column('updated_at', __('Ngày cập nhật'))->display(function ($create_at){
-            return Carbon::parse($create_at)->format('H:i:s d-m-Y');
-        });
+//        $grid->column('created_at', __('Ngày cập nhật'))->display(function ($create_at){
+//            return Carbon::parse($create_at)->format('H:i:s d-m-Y');
+//        });
+//        $grid->column('updated_at', __('Ngày cập nhật'))->display(function ($create_at){
+//            return Carbon::parse($create_at)->format('H:i:s d-m-Y');
+//        });
+        $grid->exporter(new LopHocExport());
 
         return $grid;
     }
@@ -101,7 +110,9 @@ class LopHocController extends AdminController
 
         $form->datetime('NgayThi', __('Ngày thi'));
 
-        $form->select('deThi', __('Đề thi'))->options(DeThi::all()->pluck('TenDeThi', 'id'));
+//        $form->select('DeThi')->options(DeThi::all()->pluck('TenDeThi','id'));
+
+        $form->select('DeThi', __('Đề thi'))->options(DeThi::all()->pluck('TenDeThi', 'id'));
 
         $form->multipleSelect('sinhVien', __('Sinh viên'))->options(User::all()->pluck('masv', 'id'));
 

@@ -5,7 +5,7 @@
 
     <div class="container mt-4">
 
-        <h2>Tất cả các bài thi của bạn</h2>
+        <h2 class="font-weight-bold">Tất cả các bài thi của bạn</h2>
 
 
         @foreach($dethi as $value)
@@ -13,15 +13,21 @@
                  style="background-color: #f3f3f3; box-shadow: 1px 1px 5px 1px #b6b6b6; padding: 40px; border-radius: 3px">
                 <div class="col-md-12">
                     <strong class="text-primary mr-4">Đề thi</strong>
-                    <strong class="{{ $value->deThi ? 'text-primary' : 'text-danger'  }}">{{ $value->deThi->TenDeThi ?? 'chưa có đề thi'  }}</strong>
+                    <strong class="{{ $value->deThii ? 'text-primary' : 'text-danger'  }}">{{ $value->deThii->TenDeThi ?? 'chưa có đề thi'  }}</strong>
                     <hr>
 
                 </div>
                 <div class="col-md-6 d-flex flex-row">
                     <span style="width: 200px">
-                        <strong>Thời gian thi</strong>
+                        <strong>Thời gian bắt đầu</strong>
                     </span>
                     <span class="text-primary">{{ date('H:i', strtotime($value->NgayThi)) }}</span>
+                </div>
+                <div class="col-md-6 d-flex flex-row">
+                    <span style="width: 200px">
+                        <strong>Thời gian thi</strong>
+                    </span>
+                    <span class="text-primary">60 phút</span>
                 </div>
                 <div class="col-md-6 d-flex flex-row">
                     <span style="width: 200px">
@@ -52,7 +58,7 @@
 
                             @elseif(\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s') >= date('Y-m-d H:i:s', strtotime($value->NgayThi)) &&
                                 \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s') <= \Carbon\Carbon::parse($value->NgayThi)->addHour()->format('Y-m-d H:i:s') )
-                                <a href="#" class="text-primary">Vào lớp thi</a>
+                                <a href="{{ route('frontend.lambaithi',$value->DeThi) }}" class="text-primary" target="_blank">Vào lớp thi</a>
                             @else
                                 <span class="text-success">Môn thi đã xong</span>
                             @endif

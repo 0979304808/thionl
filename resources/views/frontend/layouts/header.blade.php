@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
     <div class="container-fluid">
         <a class="navbar-branch" href="trangchu1.html">
-            <img src="./images/logo.jpg." height="70"/>
+            <img src="{{ asset('/images/logo.jpg') }}" height="70"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive">
@@ -36,15 +36,16 @@
                     @endif
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form action="{{ route('frontend.lophoc') }}" method="get" class="form-inline my-2 my-lg-0">
+                <input name="q" class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm lớp học..." aria-label="Search" value="{{ request('q') }}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
             </form>
             @if(Auth::check())
                 <div id="profile" class="position-relative">
-                    <a class="text-primary">{{ Auth::user()->name }}
+                    <a class="nav-item-link text-white">
+                        {{ Auth::user()->name }}
                     </a>
-                    <ul style="min-width: 150px; display: none" id="profile-item" class="pt-1 position-absolute p-0 list-group list-group-flush shadow p-3 mb-5 bg-white rounded">
+                    <ul style="right: -2px;width: 150px; display: none" id="profile-item" class="pt-1 position-absolute p-0 list-group list-group-flush shadow p-3 mb-5 bg-white rounded">
                         <li class="list-group-item p-0">
 {{--                            <a class="text-decoration-none text-body" href="{{ route('frontend.profile') }}">Tài khoản</a>--}}
                         </li>
@@ -56,7 +57,7 @@
 
 
             @else
-                <a href="{{ route('frontend.login') }}" class="login" >Đăng nhập</a>
+                <a class="nav-item-link " href="{{ route('frontend.login') }}" class="login" >Đăng nhập</a>
             @endif
         </div>
     </div>

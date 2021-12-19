@@ -2,7 +2,7 @@ html{
     margin: 0;
     padding: 0;
     border: 0;
-    
+
 }
 body{
 	font-family: Piazzolla;
@@ -28,7 +28,7 @@ header{
 	left: 38%	;
 	font-size: 120px;
 	font-weight: 500;
-	
+
 }
 
 .form-inline input{
@@ -66,14 +66,14 @@ color:black;
   	opacity: 0.9;
 }
 .p{
-	color:black !impo ;
+	color:black ;
 }
 
 
 
 @media screen and (max-width: 800px){
 	.form-inline {
-	width: 0%; 
+	width: 0%;
 	height: 40px;
 	background-color: none;
 	border: 1px solid rgba(6,44,46);

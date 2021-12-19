@@ -7,7 +7,7 @@ use App\Models\CauHoi;
 use App\Models\DeThi;
 use Carbon\Carbon;
 use Encore\Admin\Layout\Content;
-Use Encore\Admin\Widgets\Table;
+use Encore\Admin\Widgets\Table;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -39,23 +39,22 @@ class DeThiController extends AdminController
 //        })->action(\App\Admin\Actions\DeThi\CauHoi::class);
 
 
-        $grid->column('cauHoi', 'Câu hỏi')->display(function ($cauhoi){
+        $grid->column('cauHoi', 'Câu hỏi')->display(function ($cauhoi) {
             return count($cauhoi);
         })->modal('Tất cả các câu hỏi', function ($model) {
 
             $comments = $model->cauHoi()->get()->map(function ($comment) {
-                return $comment->only(['id', 'CauHoi','A', 'B', 'C', 'D', 'E', 'F', 'DapAn','created_at']);
+                return $comment->only(['id', 'CauHoi', 'A', 'B', 'C', 'D', 'E', 'F', 'DapAn', 'created_at']);
             });
 
-            return new Table(['ID','Câu hỏi','A', 'B', 'C', 'D', 'E', 'F', 'Đáp án đúng','Ngày tạo'], $comments->toArray());
+            return new Table(['ID', 'Câu hỏi', 'A', 'B', 'C', 'D', 'E', 'F', 'Đáp án đúng', 'Ngày tạo'], $comments->toArray());
         });
 
 
-
-        $grid->column('created_at', __('Ngày tạo'))->display(function ($create_at){
+        $grid->column('created_at', __('Ngày tạo'))->display(function ($create_at) {
             return Carbon::parse($create_at)->format('H:i:s d-m-Y');
         });
-        $grid->column('updated_at', __('Ngày cập nhật'))->display(function ($create_at){
+        $grid->column('updated_at', __('Ngày cập nhật'))->display(function ($create_at) {
             return Carbon::parse($create_at)->format('H:i:s d-m-Y');
         });
 
@@ -105,9 +104,8 @@ class DeThiController extends AdminController
 
         $csv = array_map('str_getcsv', file($file));
 
-        return $csv;
-
         if ($csv[0]) {
+            $de_thi = array_search('Đề thi', $csv[0]);
             $cau_hoi = array_search('Câu hỏi', $csv[0]);
             $a = array_search('A', $csv[0]);
             $b = array_search('B', $csv[0]);
@@ -116,17 +114,41 @@ class DeThiController extends AdminController
             $e = array_search('E', $csv[0]);
             $f = array_search('F', $csv[0]);
             $dap_an_dung = array_search('Đáp án', $csv[0]);
-
+            $dethi_id = 0;
+            $cauhoi_id = 0;
+            $dethi_name = '' ;
+            $i = 0;
             foreach ($csv as $key => $value) {
                 if ($key != 0) {
-                    $cauhoi = $value[0];
-                    if ($cau_hoi) {
-                        $cauhoi = $value[$cau_hoi];
+                    $dethi = $value[0];
+                    if ($de_thi) {
+                        $dethi = $value[$de_thi];
                     }
-                    if ($cauhoi) {
-                        if (!CauHoi::where('CauHoi', $cauhoi)->exists()) {
+                    if ($dethi){
+                        $i++;
+                        $dethi_name = $dethi;
+                    }
+                    $chech_dt = DeThi::where('TenDeThi', $dethi_name)->first();
+                    if ($dethi) {
+                        if (!$chech_dt) {
+                            $dt = new DeThi();
+                            $dt->TenDeThi = $dethi;
+                            $dt->save();
+                            $dethi_id = $dt->id;
+                        }
+                    }
+
+                    if ($chech_dt) {
+                        $dethi_id = $chech_dt->id;
+                    }
+
+                    if ($value[$cau_hoi]) {
+                        $check_cauhoi = CauHoi::where('CauHoi', $value[$cau_hoi])->first();
+                        if ($check_cauhoi) {
+                            $cauhoi_id = $check_cauhoi->id;
+                        }else {
                             $ch = new CauHoi();
-                            $ch->CauHoi = $cauhoi;
+                            $ch->CauHoi = $value[$cau_hoi];
                             $ch->A = $a ? $value[$a] : null;
                             $ch->B = $b ? $value[$b] : null;
                             $ch->C = $c ? $value[$c] : null;
@@ -135,11 +157,22 @@ class DeThiController extends AdminController
                             $ch->F = $f ? $value[$f] : null;
                             $ch->DapAn = $dap_an_dung ? $value[$dap_an_dung] : null;
                             $ch->save();
+                            $cauhoi_id = $ch->id;
                         }
                     }
-                    return $a;
+
+                    if ($chech_dt){
+                        if (!$chech_dt->cauHoi()->where('cau_hoi_id',$cauhoi_id)->exists()){
+                            $chech_dt->cauHoi()->attach($cauhoi_id);
+                        }
+                    }else {
+                        if (!$dt->cauHoi()->exists()) {
+                            $dt->cauHoi()->attach($cauhoi_id);
+                        }
+                    }
                 }
             }
+            return $i;
         }
     }
 }
