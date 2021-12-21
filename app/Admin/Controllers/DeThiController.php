@@ -101,9 +101,7 @@ class DeThiController extends AdminController
     protected function import(Content $content, Request $request)
     {
         $file = $request->file('file');
-
         $csv = array_map('str_getcsv', file($file));
-
         if ($csv[0]) {
             $de_thi = array_search('Đề thi', $csv[0]);
             $cau_hoi = array_search('Câu hỏi', $csv[0]);

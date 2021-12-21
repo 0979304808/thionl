@@ -32,7 +32,7 @@ class HomeController extends Controller
         $view = view('frontend.lophoc');
         if (request('q')){
             $q = request('q');
-            $lophoc = LopHoc::where('TenLop','like', '%'.$q.'%')->where('TenHocPhan','like', '%'.$q.'%')->where('MoTa','like', '%'.$q.'%')->get();
+            $lophoc = LopHoc::where('TenLop','like', '%'.$q.'%')->orWhere('TenHocPhan','like', '%'.$q.'%')->where('MoTa','like', '%'.$q.'%')->get();
         }
         $view->with('lophoc', $lophoc);
         return $view;
